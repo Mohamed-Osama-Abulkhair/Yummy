@@ -1,6 +1,6 @@
 import { areaFetch } from "./area.js";
 import { categoriesFetch } from "./categories.js";
-import { contactHtmlCode, formInputBlur, formInputClick, formSpanClick } from "./contact.js";
+import { contactHandler, contactHtmlCode, formInputBlur, formInputClick, formSpanClick } from "./contact.js";
 import { ingredientsFetch } from "./ingredients.js";
 import {
   inputBlur,
@@ -77,6 +77,7 @@ async function liClick(e) {
     $("span").click(formSpanClick);
     $(".form-control").click(formInputClick);
     $(".form-control").blur(formInputBlur);
+    contactHandler()
   }
   NavBtnClick();
 }

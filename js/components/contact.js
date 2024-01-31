@@ -78,98 +78,102 @@ function formInputBlur(e) {
 }
 
 // _________________________________________________________
-var inputs = document.getElementsByTagName("input");
-let errorMessageArray = document.getElementsByClassName("error-message");
-let regexName = /^[a-zA-Z]{3,9}(?:\s[a-zA-Z]{3,9})*$/;
-var regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-let regexPhone = /^01[0125][0-9]{8}$/;
-let regexAge = /^(1[6-9]|[2-9]\d|100)$/;
-let regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+function contactHandler(){
 
-let displayError = (regex, input, errorMessage) => {
-  if (regex.test(input.value)) {
-    input.classList.add("is-valid");
-    input.classList.remove("is-invalid");
-    $("#submitBtn").removeAttr("disabled");
-    $("#submitBtn").addClass("btn-outline-success");
-    $("#submitBtn").removeClass("btn-outline-danger");
-    errorMessage.classList.add("d-none");
-    addValidation();
-  } else {
-    input.classList.add("is-invalid");
-    $("#submitBtn").attr("disabled", "true");
-    $("#submitBtn").addClass("btn-outline-danger");
-    $("#submitBtn").removeClass("btn-outline-success");
-    errorMessage.classList.remove("d-none");
-  }
-};
-
-function addValidation() {
-  for (var i = 1; i <= inputs.length - 2; i++) {
-    if (inputs[i].value == "") {
-      $("#submitBtn").attr("disabled", "true");
+  var inputs = document.getElementsByTagName("input");
+  let errorMessageArray = document.getElementsByClassName("error-message");
+  let regexName = /^[a-zA-Z]{3,9}(?:\s[a-zA-Z]{3,9})*$/;
+  var regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  let regexPhone = /^01[0125][0-9]{8}$/;
+  let regexAge = /^(1[6-9]|[2-9]\d|100)$/;
+  let regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  
+  let displayError = (regex, input, errorMessage) => {
+    if (regex.test(input.value)) {
+      input.classList.add("is-valid");
+      input.classList.remove("is-invalid");
+      $("#submitBtn").removeAttr("disabled");
+      $("#submitBtn").addClass("btn-outline-success");
+      $("#submitBtn").removeClass("btn-outline-danger");
+      errorMessage.classList.add("d-none");
+      addValidation();
     } else {
-      if (
-        regexName.test($("#nameInput").value) &&
-        regexEmail.test($("#emailInput").value) &&
-        regexPhone.test($("#emailInput").value) &&
-        regexAge.test($("#ageInput").value) &&
-        regexPass.test($("#passwordInput").value) &&
-        $("#passwordInput").value === $("#rePasswordInput").value
-      ) {
-        $("#submitBtn").removeAttr("disabled");
-        inputs[i].classList.add("is-valid");
-        inputs[i].classList.remove("is-invalid");
-      } else {
+      input.classList.add("is-invalid");
+      $("#submitBtn").attr("disabled", "true");
+      $("#submitBtn").addClass("btn-outline-danger");
+      $("#submitBtn").removeClass("btn-outline-success");
+      errorMessage.classList.remove("d-none");
+    }
+  };
+  
+  function addValidation() {
+    for (var i = 1; i <= inputs.length - 2; i++) {
+      if (inputs[i].value == "") {
         $("#submitBtn").attr("disabled", "true");
+      } else {
+        if (
+          regexName.test($("#nameInput").value) &&
+          regexEmail.test($("#emailInput").value) &&
+          regexPhone.test($("#emailInput").value) &&
+          regexAge.test($("#ageInput").value) &&
+          regexPass.test($("#passwordInput").value) &&
+          $("#passwordInput").value === $("#rePasswordInput").value
+        ) {
+          $("#submitBtn").removeAttr("disabled");
+          inputs[i].classList.add("is-valid");
+          inputs[i].classList.remove("is-invalid");
+        } else {
+          $("#submitBtn").attr("disabled", "true");
+        }
       }
     }
   }
-}
-
-let pass = document.getElementById("passwordInput");
-let rePass = document.getElementById("rePasswordInput");
-
-$("#nameInput").keyup(function () {
-  displayError(regexName, this, errorMessageArray[0]);
-});
-$("#emailInput").keyup(function () {
-  displayError(regexPhone, this, errorMessageArray[1]);
-});
-$("#phoneInput").keyup(function () {
-  displayError(regexPhone, this, errorMessageArray[2]);
-});
-$("#ageInput").keyup(function () {
-  displayError(regexAge, this, errorMessageArray[3]);
-});
-$("#passwordInput").keyup(function () {
-  displayError(regexPass, this, errorMessageArray[4]);
-});
-$("#rePasswordInput").keyup(function () {
-  if (pass.value != rePass.value) {
-    errorMessageArray[5].classList.remove("d-none");
-    rePass.classList.add("is-invalid");
-    $("#submitBtn").attr("disabled", "true");
-    $("#submitBtn").removeClass("btn-outline-success");
-    $("#submitBtn").addClass("btn-outline-danger");
-    addValidation();
-  } else {
-    errorMessageArray[5].classList.add("d-none");
-    rePass.classList.add("is-valid");
-    rePass.classList.remove("is-invalid");
-    $("#submitBtn").removeAttr("disabled");
-    $("#submitBtn").removeClass("btn-outline-danger");
-    $("#submitBtn").addClass("btn-outline-success");
-  }
-});
-
-// _________________________________________________
-$("#submitBtn").click(function () {
-  Swal.fire({
-    icon: "success",
-    title: "congratulation !",
+  
+  let pass = document.getElementById("passwordInput");
+  let rePass = document.getElementById("rePasswordInput");
+  
+  $("#nameInput").keyup(function () {
+    displayError(regexName, this, errorMessageArray[0]);
   });
-  let btn = document.querySelector("button.swal2-confirm");
-  btn.innerHTML = "Thanks";
-});
-export { formSpanClick, formInputClick, formInputBlur ,contactHtmlCode};
+  $("#emailInput").keyup(function () {
+    displayError(regexPhone, this, errorMessageArray[1]);
+  });
+  $("#phoneInput").keyup(function () {
+    displayError(regexPhone, this, errorMessageArray[2]);
+  });
+  $("#ageInput").keyup(function () {
+    displayError(regexAge, this, errorMessageArray[3]);
+  });
+  $("#passwordInput").keyup(function () {
+    displayError(regexPass, this, errorMessageArray[4]);
+  });
+  $("#rePasswordInput").keyup(function () {
+    if (pass.value != rePass.value) {
+      errorMessageArray[5].classList.remove("d-none");
+      rePass.classList.add("is-invalid");
+      $("#submitBtn").attr("disabled", "true");
+      $("#submitBtn").removeClass("btn-outline-success");
+      $("#submitBtn").addClass("btn-outline-danger");
+      addValidation();
+    } else {
+      errorMessageArray[5].classList.add("d-none");
+      rePass.classList.add("is-valid");
+      rePass.classList.remove("is-invalid");
+      $("#submitBtn").removeAttr("disabled");
+      $("#submitBtn").removeClass("btn-outline-danger");
+      $("#submitBtn").addClass("btn-outline-success");
+      addValidation();
+    }
+  });
+  
+  // _________________________________________________
+  $("#submitBtn").click(function () {
+    Swal.fire({
+      icon: "success",
+      title: "congratulation !",
+    });
+    let btn = document.querySelector("button.swal2-confirm");
+    btn.innerHTML = "Thanks";
+  });
+}
+export { formSpanClick, formInputClick, formInputBlur ,contactHtmlCode ,contactHandler};
