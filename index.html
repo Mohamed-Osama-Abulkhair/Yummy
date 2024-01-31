@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yummy</title>
+    <link rel="icon" href="Images/logo.png" sizes="16x16" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div id="loader">
+      <div>
+        <h2>Cooking in progress</h2>
+        <div id="cooking">
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div id="area">
+            <div id="sides">
+              <div id="pan"></div>
+              <div id="handle"></div>
+            </div>
+            <div id="pancake">
+              <div id="pastry"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="navBox">
+        <img src="Images/logo.png" alt="logo" />
+        <div id="NavBtn">
+          <div class="btnBar" id="fBar"></div>
+          <div class="btnBar" id="mBar"></div>
+          <div class="btnBar" id="lBar"></div>
+        </div>
+        <div class="share">
+          <i class="fa-solid fa-globe"></i>
+          <i class="fa-solid fa-share-nodes"></i>
+        </div>
+      </div>
+
+      <div class="insideNavLinks">
+        <ul class="overflow-hidden">
+          <li id="search">Search</li>
+          <li id="categories">Categories</li>
+          <li class="active" id="area">Area</li>
+          <li id="ingredients">Ingredients</li>
+          <li id="contact">Contact Us</li>
+        </ul>
+      </div>
+    </nav>
+    <section>
+      <div class="container py-5">
+        <div class="row gy-5" id="root"></div>
+      </div>
+    </section>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/code.jquery.com_jquery-3.7.0.js"></script>
+    <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js
+    "></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
