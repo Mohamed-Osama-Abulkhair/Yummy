@@ -30,7 +30,7 @@ function contactHtmlCode() {
   <span>Enter Your Age</span>
   <div class="error-message d-none">
     <i class="fa-solid fa-caret-up" style="color: #df0016"></i>
-    <p class="m-0 py-1">Enter a real age +16</p>
+    <p class="m-0 py-1">Enter a real age +16 to 100</p>
   </div>
 </div>
 <div class="col-md-6 form-floating position-relative">
@@ -39,13 +39,14 @@ function contactHtmlCode() {
   <div class="error-message d-none">
     <i class="fa-solid fa-caret-up" style="color: #df0016"></i>
     <p class="m-0 py-1">
-      Enter a pass *Minimum 8 characters, 1 letter & 1 number:*
+      Enter a pass *Minimum 8 characters, 1 letter & 1 number (confirm your pass to check)*
     </p>
   </div>
 </div>
 <div class="col-md-6 form-floating position-relative">
   <input type="password" class="form-control" id="rePasswordInput" />
   <span>confirm Your Password</span>
+  <i class="fa-solid fa-eye eye-password-icon position-absolute"></i>
   <div class="error-message d-none">
     <i class="fa-solid fa-caret-up" style="color: #df0016"></i>
     <p class="m-0 py-1">password doesn't match</p>
@@ -78,8 +79,7 @@ function formInputBlur(e) {
 }
 
 // _________________________________________________________
-function contactHandler(){
-
+function contactHandler() {
   var inputs = document.getElementsByTagName("input");
   let errorMessageArray = document.getElementsByClassName("error-message");
   let regexName = /^[a-zA-Z]{3,9}(?:\s[a-zA-Z]{3,9})*$/;
@@ -87,56 +87,47 @@ function contactHandler(){
   let regexPhone = /^01[0125][0-9]{8}$/;
   let regexAge = /^(1[6-9]|[2-9]\d|100)$/;
   let regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  
+
   let displayError = (regex, input, errorMessage) => {
     if (regex.test(input.value)) {
       input.classList.add("is-valid");
       input.classList.remove("is-invalid");
+      errorMessage.classList.add("d-none");
+    } else {
+      input.classList.add("is-invalid");
+      errorMessage.classList.remove("d-none");
+    }
+    addValidation();
+  };
+
+  function addValidation() {
+    let isValid = true;
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].value == "" || !inputs[i].classList.contains("is-valid")) {
+        isValid = false;
+        break;
+      }
+    }
+
+    if (isValid) {
       $("#submitBtn").removeAttr("disabled");
       $("#submitBtn").addClass("btn-outline-success");
       $("#submitBtn").removeClass("btn-outline-danger");
-      errorMessage.classList.add("d-none");
-      addValidation();
     } else {
-      input.classList.add("is-invalid");
       $("#submitBtn").attr("disabled", "true");
       $("#submitBtn").addClass("btn-outline-danger");
       $("#submitBtn").removeClass("btn-outline-success");
-      errorMessage.classList.remove("d-none");
-    }
-  };
-  
-  function addValidation() {
-    for (var i = 1; i <= inputs.length - 2; i++) {
-      if (inputs[i].value == "") {
-        $("#submitBtn").attr("disabled", "true");
-      } else {
-        if (
-          regexName.test($("#nameInput").value) &&
-          regexEmail.test($("#emailInput").value) &&
-          regexPhone.test($("#emailInput").value) &&
-          regexAge.test($("#ageInput").value) &&
-          regexPass.test($("#passwordInput").value) &&
-          $("#passwordInput").value === $("#rePasswordInput").value
-        ) {
-          $("#submitBtn").removeAttr("disabled");
-          inputs[i].classList.add("is-valid");
-          inputs[i].classList.remove("is-invalid");
-        } else {
-          $("#submitBtn").attr("disabled", "true");
-        }
-      }
     }
   }
-  
+
   let pass = document.getElementById("passwordInput");
   let rePass = document.getElementById("rePasswordInput");
-  
+
   $("#nameInput").keyup(function () {
     displayError(regexName, this, errorMessageArray[0]);
   });
   $("#emailInput").keyup(function () {
-    displayError(regexPhone, this, errorMessageArray[1]);
+    displayError(regexEmail, this, errorMessageArray[1]);
   });
   $("#phoneInput").keyup(function () {
     displayError(regexPhone, this, errorMessageArray[2]);
@@ -146,34 +137,77 @@ function contactHandler(){
   });
   $("#passwordInput").keyup(function () {
     displayError(regexPass, this, errorMessageArray[4]);
-  });
-  $("#rePasswordInput").keyup(function () {
-    if (pass.value != rePass.value) {
-      errorMessageArray[5].classList.remove("d-none");
-      rePass.classList.add("is-invalid");
-      $("#submitBtn").attr("disabled", "true");
-      $("#submitBtn").removeClass("btn-outline-success");
-      $("#submitBtn").addClass("btn-outline-danger");
-      addValidation();
-    } else {
+    checkPass(pass, 4);
+    if (pass.value == rePass.value && pass.value != "" && rePass.value != "") {
       errorMessageArray[5].classList.add("d-none");
       rePass.classList.add("is-valid");
       rePass.classList.remove("is-invalid");
-      $("#submitBtn").removeAttr("disabled");
-      $("#submitBtn").removeClass("btn-outline-danger");
-      $("#submitBtn").addClass("btn-outline-success");
-      addValidation();
+    } else {
+      pass.classList.remove("is-valid");
+      rePass.classList.remove("is-valid");
+      pass.classList.add("is-invalid");
+      rePass.classList.add("is-invalid");
     }
   });
-  
+  $("#rePasswordInput").keyup(function () {
+    displayError(regexPass, this, errorMessageArray[5]);
+    checkPass(rePass, 5);
+    if (pass.value == rePass.value && pass.value != "" && rePass.value != "") {
+      errorMessageArray[4].classList.add("d-none");
+      pass.classList.add("is-valid");
+      pass.classList.remove("is-invalid");
+    } else {
+      pass.classList.remove("is-valid");
+      rePass.classList.remove("is-valid");
+      pass.classList.add("is-invalid");
+      rePass.classList.add("is-invalid");
+    }
+  });
+
+  function checkPass(input, i) {
+    if (pass.value != rePass.value) {
+      errorMessageArray[i].classList.remove("d-none");
+      input.classList.add("is-invalid");
+    } else {
+      errorMessageArray[i].classList.add("d-none");
+      input.classList.add("is-valid");
+      input.classList.remove("is-invalid");
+    }
+    addValidation();
+  }
+  let passwordIcon = document.querySelectorAll(".eye-password-icon")[0];
+  passwordIcon.onclick = function () {
+    if (pass.type == "password") {
+      pass.type = "text";
+      rePass.type = "text";
+      passwordIcon.classList.remove("fa-eye");
+      passwordIcon.classList.add("fa-eye-slash");
+    } else {
+      pass.type = "password";
+      rePass.type = "password";
+      passwordIcon.classList.remove("fa-eye-slash");
+      passwordIcon.classList.add("fa-eye");
+    }
+  };
   // _________________________________________________
   $("#submitBtn").click(function () {
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].value = "";
+    }
     Swal.fire({
       icon: "success",
       title: "congratulation !",
     });
     let btn = document.querySelector("button.swal2-confirm");
     btn.innerHTML = "Thanks";
+    addValidation();
   });
 }
-export { formSpanClick, formInputClick, formInputBlur ,contactHtmlCode ,contactHandler};
+
+export {
+  formSpanClick,
+  formInputClick,
+  formInputBlur,
+  contactHtmlCode,
+  contactHandler,
+};

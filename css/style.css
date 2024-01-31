@@ -505,6 +505,15 @@ input.form-control:focus {
   box-shadow: none !important;
 }
 
+.eye-password-icon{
+color: #ffcc11;
+font-size: 1.25rem;
+cursor: pointer;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm{
   background-color: #1cb800 !important;
 }
