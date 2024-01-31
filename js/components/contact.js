@@ -109,7 +109,12 @@ function contactHandler() {
       }
     }
 
-    if (isValid) {
+    // Check if both password and re-entered password are valid
+    if (
+      isValid &&
+      pass.classList.contains("is-valid") &&
+      rePass.classList.contains("is-valid")
+    ) {
       $("#submitBtn").removeAttr("disabled");
       $("#submitBtn").addClass("btn-outline-success");
       $("#submitBtn").removeClass("btn-outline-danger");
@@ -138,43 +143,25 @@ function contactHandler() {
   $("#passwordInput").keyup(function () {
     displayError(regexPass, this, errorMessageArray[4]);
     checkPass(pass, 4);
-    if (pass.value == rePass.value && pass.value != "" && rePass.value != "") {
-      errorMessageArray[5].classList.add("d-none");
-      rePass.classList.add("is-valid");
-      rePass.classList.remove("is-invalid");
-    } else {
-      pass.classList.remove("is-valid");
-      rePass.classList.remove("is-valid");
-      pass.classList.add("is-invalid");
-      rePass.classList.add("is-invalid");
-    }
   });
   $("#rePasswordInput").keyup(function () {
     displayError(regexPass, this, errorMessageArray[5]);
     checkPass(rePass, 5);
-    if (pass.value == rePass.value && pass.value != "" && rePass.value != "") {
-      errorMessageArray[4].classList.add("d-none");
-      pass.classList.add("is-valid");
-      pass.classList.remove("is-invalid");
-    } else {
-      pass.classList.remove("is-valid");
-      rePass.classList.remove("is-valid");
-      pass.classList.add("is-invalid");
-      rePass.classList.add("is-invalid");
-    }
   });
 
   function checkPass(input, i) {
-    if (pass.value != rePass.value) {
-      errorMessageArray[i].classList.remove("d-none");
-      input.classList.add("is-invalid");
-    } else {
+    if (pass.value != "" && rePass.value != "" && pass.value == rePass.value) {
       errorMessageArray[i].classList.add("d-none");
       input.classList.add("is-valid");
       input.classList.remove("is-invalid");
+    } else {
+      errorMessageArray[i].classList.remove("d-none");
+      input.classList.remove("is-valid");
+      input.classList.add("is-invalid");
     }
     addValidation();
   }
+
   let passwordIcon = document.querySelectorAll(".eye-password-icon")[0];
   passwordIcon.onclick = function () {
     if (pass.type == "password") {
@@ -189,18 +176,32 @@ function contactHandler() {
       passwordIcon.classList.add("fa-eye");
     }
   };
+
+  function resetFormState() {
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = "";
+      inputs[i].classList.remove("is-valid", "is-invalid");
+    }
+
+    pass.value = "";
+    rePass.value = "";
+    pass.classList.remove("is-valid", "is-invalid");
+    rePass.classList.remove("is-valid", "is-invalid");
+
+    $("#submitBtn").attr("disabled", "true");
+    $("#submitBtn").addClass("btn-outline-danger");
+    $("#submitBtn").removeClass("btn-outline-success");
+  }
+
   // _________________________________________________
   $("#submitBtn").click(function () {
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].value = "";
-    }
     Swal.fire({
       icon: "success",
       title: "congratulation !",
     });
     let btn = document.querySelector("button.swal2-confirm");
     btn.innerHTML = "Thanks";
-    addValidation();
+    resetFormState();
   });
 }
 
